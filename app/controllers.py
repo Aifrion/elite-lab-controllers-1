@@ -67,3 +67,53 @@ def delete_sandwich(sandwich_id):
 ######################
 #   Your Code Below  #
 ######################
+
+@app.route('/messages/<message_id>', methods=['DELETE'])
+def delete_message(message_id):
+    result = MessageManager.delete_message(message_id)
+    if result:
+        return Response(status=200)
+    else:
+        abort(500)
+
+@app.route('/messages/', methods=['POST'])
+def create_message():
+    body = request.json
+    message = MessageManager.create_message(body)
+    
+    return {"id": message.id}
+
+@app.route('/messages/', methods=['GET'])
+def get_all_messages():
+    response = []
+    for message in MessageManager.get_all_messages():
+        response.append(message.to_dict())
+        
+    return {"messages": response}
+
+@app.route('/messages/<message_id>', methods=['GET'])
+def get_message(message_id):
+    message = MessageManager.get_message_by_id(message_id)
+    if not message:
+        abort(404)
+
+    return message.to_dict()
+
+@app.route("/chat/<chat_id>", methods=['GET'])
+def filter_messages_by_chat_id(chat_id):
+    chat = []
+    for c in MessageManager.filter_messages_by_chat_id(chat_id):
+        chat.append(c.to_dict())
+    return {"messages": chat}
+
+
+@app.route("/last/", methods=['GET'])
+def get_last_messages():
+    q = request.args.get('count', '<str:num_messages>')
+    messages = []
+    for m in MessageManager.get_last_messages(q):
+        messages.append(m.to_dict())
+       
+    
+    return{"messages": messages}
+    

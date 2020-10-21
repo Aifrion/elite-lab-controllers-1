@@ -94,8 +94,8 @@ def check_if_lab_complete(body1, body2):
     body2['chat_id'] = TEST_CHAT_ID2
 
     # Setup
-    call_delete_by_chat_api(TEST_CHAT_ID1)
-    call_delete_by_chat_api(TEST_CHAT_ID2)
+    # call_delete_by_chat_api(TEST_CHAT_ID1)
+    # call_delete_by_chat_api(TEST_CHAT_ID2)
 
     # Assert that create message api works
     message_id = call_create_message_api(body1)['id']
